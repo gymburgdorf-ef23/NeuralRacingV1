@@ -1,0 +1,23 @@
+html {
+    --wfull: min(100vw, 800px);
+    --w: calc(var(--wfull) - 2em);
+    --hsvg: calc(var(--w) * 0.375);
+}
+
+.drawing {
+    width: var(--w);
+    height: var(--hsvg);
+}
+
+.wrap {background-color: rgb(50, 70, 100);
+    width: var(--w);
+    height: var(--hsvg);
+    background-size: 100% 100%; background-repeat: no-repeat;}
+path {stroke: rgb(87, 87, 87); fill: none; stroke-linejoin: round;}
+.scan {stroke: rgb(255, 157, 157);}
+
+h2 {margin-top: 2em;;}
+.explanation {
+    width: 80%; margin: auto;
+}
+

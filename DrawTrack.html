@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Draw Track</title>
+	<link rel="stylesheet" href="https://gymburgdorf-ef23.github.io/helpers/basicstyle.css"></link>
+	<style>
+		body {overflow: scroll;}
+		.wrap {background-color: rgb(50, 70, 100); touch-action: none;
+			background-image: url(./Monaco1.png); background-size: 100% 100%; background-repeat: no-repeat;}
+		path {stroke-width: 1px; stroke: aqua; fill: none;}
+		path.simple {stroke-width: 10px; stroke: rgba(100, 100, 255, 0.8); fill: none;}
+	</style>
+</head>
+<body>
+	<h1>SVG Drawer</h1>
+	<div class="wrap"><svg class="drawing" width=800 height=300></svg></div>
+	<div class="asArray"></div>
+	<script>
+	const drawArea = document.querySelector(".drawing")
+	drawArea.addEventListener("pointermove", collectPoints)
+	drawArea.addEventListener("pointerdown", startDrawing)
+	drawArea.addEventListener("pointerup", stopDrawing)
+	//drawArea.addEventListener("pointerleave", stopDrawing)
+
+	let isDrawing = false
+	let points = []
+
+	function startDrawing() {
+		isDrawing = true
+	}
+
+	function stopDrawing(e) {
+		isDrawing = false
+		points = []
+	}
+
+	function collectPoints(event) {
+		if(isDrawing) {
+			var rect = drawArea.getBoundingClientRect();
+			points.push({
+				x: event.clientX - rect.left,
+				y: event.clientY - rect.top
+			})
+			if(points.length > 2) {
+				const d = `M ${points[0].x} ${points[0].y} L ${points.slice(1).map(p=>`${p.x} ${p.y}`).join(", ")} Z`
+				drawArea.innerHTML = `<path d="${d}"></path>`
+				const s = simplify(points)
+				if(s.length > 2) {
+					const ds = `M ${s[0][0]} ${s[0][1]} L ${s.slice(1).map(p=>`${p[0]} ${p[1]}`).join(", ")} Z`
+					drawArea.innerHTML += `<path class="simple" d="${ds}"></path>`
+					document.querySelector(".asArray").textContent = "["+s.map(p=>`[${p[0].toFixed(0)},${p[1].toFixed(0)}]`).join(",")+"]"
+				}
+
+			}
+		}
+	}
+
+	function simplify(points, d=6) {
+		const simplified = []
+		let tempx = null
+		let tempy = null
+		let n = 0
+		for(let p of points) {
+			if(n == 0) {
+				tempx = p.x
+				tempy = p.y
+				n++
+			}
+			else if((p.x-tempx)**2 + (p.y-tempy)**2 < d**2) {
+				tempx = n/(n+1)*tempx + 1/(n+1)*p.x
+				tempy = n/(n+1)*tempy + 1/(n+1)*p.y
+				n++
+			}
+			else {
+				simplified.push([Math.round(tempx), Math.round(tempy)])
+				tempx = p.x
+				tempy = p.y
+				n = 1
+			}
+		}
+		return simplified
+	}
+	
+	</script>
+</body>
+</html>

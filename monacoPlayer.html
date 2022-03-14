@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Monaco Player</title>
+	<link rel="stylesheet" href="https://gymburgdorf-ef23.github.io/helpers/basicstyle.css"></link>
+	<link rel="stylesheet" href="NeuralRacer.css"></link>
+</head>
+<body>
+	<h1>Monaco Player</h1>
+	<div class="wrap"><svg class="drawing" viewBox="0 0 800 300"></svg></div>
+	<div class="score"></div>
+	<div class="output"></div>
+	<script src="Track.js"></script>
+	<script src="TrackRenderer.js"></script>
+	<script src="Monaco.js"></script>
+	<script src="Car.js"></script>
+	<script src="CarRenderer.js"></script>
+	<script src="CarPlayer.js"></script>
+	<script>
+
+	const track = setupMonaco()
+	const car = new CarPlayer(track)
+	const carRenderer = new CarRenderer(track)
+
+	function step() {
+		car.move()
+		carRenderer.render(car, true)
+		if(car.checkCollision()) {
+			alert("game over")
+		}
+		else {
+			requestAnimationFrame(step)
+		}
+	}
+
+	step()
+
+	</script>
+</body>
+</html>

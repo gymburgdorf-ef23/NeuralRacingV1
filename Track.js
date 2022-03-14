@@ -1,0 +1,87 @@
+class Track {
+
+	constructor(points, width) {
+		this.points = points
+		this.width = width
+		this.distCache = {}
+	}
+
+	getStartPosition() {
+		const p0 = this.points[0]
+		const p1 = this.points[1]
+		const rot = Math.atan2(p1[1] - p0[1], p1[0] - p0[0])
+		return {
+			x: p0[0],
+			y: p0[1],
+			rot
+		}
+	}
+
+	getExactOffset(x, y) {
+		let	dSqrMin = Infinity
+		const points = this.points
+		for(let i = 0; i < points.length; i++) {
+			let [x1, y1] = points[i]
+			let [x2, y2] = points[(i+1) % points.length]
+			let dSqr = getDistSqr(x, y, x1, y1, x2, y2)
+			if(dSqr < dSqrMin) dSqrMin = dSqr
+		}
+		return dSqrMin ** 0.5
+	}
+
+	getOffset(x, y) {
+		let rx = Math.round(x)
+		let ry = Math.round(y)
+		let key = rx + "_" + ry
+		let cached = this.distCache[key] 
+		if(cached && cached < 0.9 * this.width) {
+			return cached
+		}
+		else {
+			const dist = this.getExactOffset(x, y)
+			this.distCache[key] = this.getExactOffset(rx, ry)	
+			return dist
+		}
+	}
+
+	scan(x0, y0, dir) {
+		const rmax = this.width / 2
+		let x = x0
+		let y = y0
+		let r = this.getOffset(x, y)
+		while(r < rmax - 1e-2) {
+			const maxStep = rmax - r
+			x += maxStep * Math.cos(dir)
+			y += maxStep * Math.sin(dir)
+			r = this.getOffset(x, y)
+		}
+		const dist = ((x-x0)**2 + (y-y0)**2)**0.5
+		return {x, y, dist}
+	}
+
+}
+
+function getDistSqr(x, y, x1, y1, x2, y2) {
+	let param = getParam(x, y, x1, y1, x2, y2)
+
+	if(param < 0) param = 0
+	if(param > 1) param = 1
+
+	const px = x1 + param * (x2 - x1);
+	const py = y1 + param * (y2 - y1);
+
+	const dx = x - px;
+	const dy = y - py;
+	return dx * dx + dy * dy;
+}
+
+function getParam(x, y, x1, y1, x2, y2) {
+	const Ax = x - x1;
+	const Ay = y - y1;
+	const Bx = x2 - x1;
+	const By = y2 - y1;
+
+	const dotProduct = Ax * Bx + Ay * By;
+	const len_sq = Bx ** 2 + By ** 2;
+	return len_sq > 0 ? dotProduct / len_sq : 0
+}
