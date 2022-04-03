@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Neural Racing</title>
+	<link rel="stylesheet" href="https://gymburgdorf-ef23.github.io/helpers/basicstyle.css"></link>
+	<style>
+		html {
+			--wfull: min(100vw, 800px);
+			--w: calc(var(--wfull) - 2em);
+			--hsvg: calc(var(--w) * 0.375);
+		}
+
+		body {width: var(--w); margin: auto; padding-bottom: 6em;}
+
+		.drawing {
+				width: var(--w);
+				height: var(--hsvg);
+		}
+
+		path {stroke: rgb(87, 87, 87); fill: none; stroke-linejoin: round;}
+		.scan {stroke: rgb(255, 157, 157);}
+
+		h2 {margin-top: 2em;;}
+		.explanation {
+				width: 80%; margin: auto;
+		}
+	</style>
+</head>
+<body>
+	<h1>Neural Racing</h1>
+	<h3>Steuerung eines (digitalen) Rennautos mittels neuronalem Netzwerk</h3>
+	<h2>Ziel</h2>
+	<p>
+		Um neuronale Netzte von Grund auf zu verstehen, wollen wir ein (digitales) Fahrzeug damit steuern.
+		Die Inpust des Netwerkes sollen Sensoren sein, welche die Distanzen zum Streckenrand in verschiedenen Richtungen messen.
+		Als weiteren Input erhält das Netzwerk seine eigene Geschwindigkeit.
+		Das Netzwerk berechnet dann zwei Outputs: Gaspedal/Bremse sowie Steuerung links/rechts.
+		<br>
+		<img class="explanation" src="sketches/00idea.png">
+	</p>
+	<h2>Rennstrecken zeichnen</h2>
+	<p>
+		Die Rennstrecken werden als Liste von Punkten gespeichert und können hier entworfen werden:
+		<a href="./DrawTrack.html" target="_blank">DrawTrack.html</a><br>
+		Die Punkte werden der Einfachheit halber mit Liniensegmenten einer fixen Breite verbunden.
+		<br>
+		<img class="explanation" src="sketches/10track.png">
+	</p>
+	<h2>Programmentwurf</h2>
+	<ol>
+		<li>Erste Programmskizzen von Hand</li>
+		<li>Erstellung von UML-Diagrammen: <a href="https://app.diagrams.net/#G1yeaHUIp-BN7OKgPFjqyOsTibeAi1i5wL">draw.io</a></li>
+	</ol>
+	<h2>Steuerung des Fahrzeugs</h2>
+	<ul>
+		<li>Implementation der Bewegung des Fahrzeugs.</li>
+		<li>Zum Ausprobieren: <a href="./monacoPlayer.html" target="_blank">monacoPlayer.html</a></li>
+	</ul>
+	<h2>Kollisionsüberprüfung</h2>
+	<ul>
+		<li>Wie weit ist das Fahrzeug von der Streckenmitte entfernt.</li>
+	</ul>
+	<div>
+		<img class="explanation" src="sketches/20offset.png">
+	</div>
+	<h2>TODO 1</h2>
+	<ull>
+		<li>Ideensuche: Erstellung einer Punktzahl, damit das neuronale Netz erkennt, ob es sich verbessert.</li>
+		<li>Aufbau eines neuronalen Netzes mit den 6 Inputs</li>
+		<li>Neuroevolution oder Backpropagation-Training?</li>
+	</ul>
+	<h2>TODO 2</h2>
+	<ull>
+		<li>Neuroevelution: Das Netzwerk soll folgende Methoden erhalten<br>
+		<code>nn.clone()</code>
+		<code>nn.randomAdjust(howmuch)</code>
+		</li>
+		<li>Dann kann es mit dem Trainieren losgehen!</li>
+	</ul>
+
+
+</body>
+</html>

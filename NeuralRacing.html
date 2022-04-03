@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Neural Racing</title>
+	<link rel="stylesheet" href="NeuralRacer.css"></link>
+</head>
+<body>
+	<h1>Neural Racing</h1>
+	<div class="wrap">
+		<svg class="drawing" viewBox="0 0 800 300"></svg>
+	</div>
+	<div class="score"></div>
+	<div class="output"></div>
+	<script src="Track.js"></script>
+	<script src="TrackRenderer.js"></script>
+	<script src="Monaco.js"></script>
+	<script src="Car.js"></script>
+	<script src="CarAI.js"></script>
+	<script src="CarPlayer.js"></script>
+	<script src="CarRenderer.js"></script>
+	<script src="NeuralNetwork.js"></script>
+	<script src="playAsHuman.js"></script>
+	<script src="trainCarAI.js"></script>
+	<script src="playRecordedCars.js"></script>
+	
+	<script>
+		const queryParams = new URLSearchParams(location.search)
+		console.log(queryParams, location.search);
+		if(queryParams.has("human")) {
+			playAsHuman()
+		}
+		else {
+			playRecordedCars()
+		}
+		//
+		//trainCarAI()
+		
+	</script>
+</body>
+</html>

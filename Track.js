@@ -4,7 +4,7 @@ class Track {
 		this.points = points
 		this.width = width
 		this.distCache = {}
-		this.prepareScores()
+		//this.prepareScores()
 	}
 
 	getStartPosition() {
@@ -75,6 +75,7 @@ class Track {
 		return checkPoint
 	}
 
+	/*
 	addPointToScores(x, y, score) {
 		const key = `${x}_${y}`
 		if(this.getExactOffset(x, y) <= (score==0 ? 0.7: 0.5)*this.width && !(key in this.scores)) {
@@ -124,7 +125,7 @@ class Track {
 	getScoreFromPoint(x, y) {
 		const key = `${Math.round(x)}_${Math.round(y)}`
 		return this.scores[key]
-	}
+	}*/
 
 }
 

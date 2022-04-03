@@ -8,6 +8,7 @@ class Car {
 		this.id = id
 		id += 1
 		this.reset()
+		this.ready = true
 	}
 
 	reset() {
@@ -19,6 +20,7 @@ class Car {
 		this.acc = 0
 		this.steer = 0
 		this.score = 0
+		this.scoreUntil = 0
 	}
 
 	move() {
@@ -34,8 +36,25 @@ class Car {
 	}
 
 	updateScore() {
-		this.score = 0
+		//this.score += 0.01 * ((0.45*this.track.width)**2 - this.track.getOffset(this.x, this.y)) + 0.15 * this.v
+		//this.score += 0.0001 * this.v ** 2
+		const checkPoint = this.track.getCheckPoint(this.x, this.y)
+		if(checkPoint > this.scoreUntil && checkPoint < this.scoreUntil + 5) {
+			this.score += checkPoint - this.scoreUntil
+			this.scoreUntil = checkPoint
+		}
+		if(checkPoint < 0.05 * this.scoreUntil) {
+			this.score += 0.1
+			this.scoreUntil = checkPoint
+		}
+		return this.score
 	}
+
+	// updateScore() {
+	// 	return this.track.getScoreFromPoint(this.x, this.y)
+	// }
+
+
 
 	getScans() {
 		let scans = []

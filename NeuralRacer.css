@@ -1,8 +1,26 @@
 html {
-    --wfull: min(100vw, 800px);
-    --w: calc(var(--wfull) - 2em);
-    --hsvg: calc(var(--w) * 0.375);
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
 }
+*, *:before, *:after {
+    box-sizing: inherit;
+    font-family: inherit;
+}
+    
+
+html {
+    max-width: 220vh;
+    --wfull: min(100vw, 200vh);
+    --w: var(--wfull);/*calc(var(--wfull) - 2em);*/
+    --hsvg: calc(var(--w) * 0.375);
+    font-size: calc(0.03 * var(--wfull));
+    color: white;
+    background-color: black;
+}
+
+body {margin: 0;}
+
+h1 {text-decoration: #eeffee underline; margin: 0.2em; font-size: 1.5rem;}
 
 .drawing {
     width: var(--w);
@@ -15,9 +33,4 @@ html {
     background-size: 100% 100%; background-repeat: no-repeat;}
 path {stroke: rgb(87, 87, 87); fill: none; stroke-linejoin: round;}
 .scan {stroke: rgb(255, 157, 157);}
-
-h2 {margin-top: 2em;;}
-.explanation {
-    width: 80%; margin: auto;
-}
 
