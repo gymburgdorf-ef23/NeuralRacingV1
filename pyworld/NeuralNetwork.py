@@ -1,13 +1,16 @@
 import json
 import math
 import random
+from copy import deepcopy
 
 def sigmoid(x):
-    return 1/(1+math.exp(-x))
+    if x < 0:
+        return 1 - 1 / (1 + math.exp(x))
+    return 1 / (1 + math.exp(-x))
 
 class NeuralNetwork:
     def __init__(self, inputsize):
-        print("createNeuralNetwork")
+        #print("createNeuralNetwork")
         self.inputsize = inputsize
         self.weights = []
         self.biases = []
@@ -45,14 +48,40 @@ class NeuralNetwork:
         self.activations.append(newactivations)
         self.lastlayersize = size  
         self.countlayers += 1 
-        print("addLayer")
+        #print("addLayer")
 
-    def importState(self, file):
+    def importFromFile(self, file):
         f = open(file)
-        data = json.load(f)
+        self.importState(json.load(f))
         f.close()
-        self.weights = data["weights"][1:]
-        self.biases = data["biases"][1:]
+
+    def importState(self, state):
+        self.weights = state["weights"]
+        self.biases = state["biases"]
+
+    def exportToFile(self, file):
+        f = open(file, "w")
+        data = json.dumps({"weights": self.weights, "biases": self.biases})
+        f.write(data)
+        f.close()
+
+    def clone(self):
+        nn = NeuralNetwork(self.inputsize)
+        nn.activations = deepcopy(self.activations)
+        nn.weights = deepcopy(self.weights)
+        nn.biases = deepcopy(self.biases)
+        nn.lastlayersize = self.lastlayersize  
+        nn.countlayers = self.countlayers
+        return nn
+
+    
+    def randomAdjust(self, amount):
+        for l in range(self.countlayers):
+            for n in range(len(self.weights[l])):
+                self.biases[l][n] += random.normalvariate(0, amount)
+                for a in range(len(self.weights[l][n])):
+                     self.weights[l][n][a] += random.normalvariate(0, amount)
+
 """
 nn = NeuralNetwork(6)
 nn.addLayer(4)

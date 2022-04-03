@@ -9,6 +9,7 @@ class Car:
 		self.track = track
 		self.id = id
 		id += 1
+		self.traces = []
 		self.reset()
 
 	def reset(self):
@@ -29,6 +30,7 @@ class Car:
 		self.rot = (self.rot + 0.03 * self.steer * sign(self.v)) % (2*math.pi)
 		self.x += math.cos(self.rot) * self.v * dt
 		self.y += math.sin(self.rot) * self.v * dt
+		self.traces.append([self.x, self.y, self.rot])
 
 	def checkCollision(self):
 		return self.track.getOffset(self.x, self.y) > 0.5 * self.track.width
@@ -43,9 +45,9 @@ class Car:
 			self.lastCheckPoint = checkPoint
 		return self.score
 
-	#// updateScore() {
-	#// 	return self.track.getScoreFromPoint(self.x, self.y)
-	#// }
+	# updateScore() {
+	# 	return self.track.getScoreFromPoint(self.x, self.y)
+	# }
 
 	def getScans(self):
 		scans = []
@@ -54,3 +56,6 @@ class Car:
 			dist = self.track.scan(self.x, self.y, dir)["dist"]
 			scans.append(0.5 * dist)
 		return scans
+
+	def getLifetime(self):
+		return len(self.traces)

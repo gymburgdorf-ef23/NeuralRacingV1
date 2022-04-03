@@ -66,8 +66,9 @@ class Track:
 			return cached
 		else:
 			dist = self.getExactOffset(x, y)
-			self.distCache[key] = self.getExactOffset(rx, ry)	
-			return dist
+			rounddist = self.getExactOffset(rx, ry)
+			self.distCache[key] = rounddist
+			return rounddist if dist < 0.9 * self.width else dist
 
 	def scan(self, x0, y0, dir):
 		rmax = self.width / 2
