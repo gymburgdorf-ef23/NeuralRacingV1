@@ -30,6 +30,9 @@
 		if(queryParams.has("human")) {
 			playAsHuman()
 		}
+		else if(queryParams.has("train")) {
+			trainCarAI()
+		}
 		else {
 			playRecordedCars()
 		}
